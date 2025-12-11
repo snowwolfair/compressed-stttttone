@@ -1,5 +1,7 @@
 // 文件路径: src/main/java/com/example/compressedores/CompressedOres.java
-package com.example.compressedores;
+package com.compressedrawstone.compressedores;
+
+import com.compressedrawstone.compressedores.datagen.DataGenerators;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -7,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod(CompressedOres.MODID)
 public class CompressedOres {
 
-  public static final String MODID = "compressedores";
+  public static final String MODID = "compressed_stones";
 
   // 注册表
   public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
@@ -38,9 +41,11 @@ public class CompressedOres {
   public static final RegistryObject<Block> COMPRESSED_STONE_9 = registerCompressedBlock("compressed_stone_9", 9);
 
   public CompressedOres() {
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     BLOCKS.register(modEventBus);
     ITEMS.register(modEventBus);
+    // 监测数据生成事件
+    modEventBus.addListener(DataGenerators::gatherData);
   }
 
   /**
@@ -67,6 +72,8 @@ public class CompressedOres {
         .strength(1.5F + (level - 1) * 0.5F); // 硬度也随等级提升
 
     RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(properties));
+
+    // 注册对应的物品
     ITEMS.register(name,
         () -> new BlockItem(block.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
     return block;
