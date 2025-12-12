@@ -2,9 +2,9 @@ package com.compressedrawstone.compressedores.datagen;
 
 import com.compressedrawstone.compressedores.CompressedOres;
 import com.compressedrawstone.compressedores.ModRecipes;
+import com.compressedrawstone.compressedores.datagen.ModBlockLootTable.LootProvider;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.LootTableProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -20,13 +20,17 @@ public class DataGenerators {
     // 方块模型物品生成
     if (event.includeServer()) {
       generator.addProvider(new ModRecipes(generator));
+      generator.addProvider(new LootProvider(generator));
     }
-    generator.addProvider(new ModBlockStateProvider(generator, CompressedOres.MODID, helper));
+
+    if (event.includeClient()) {
+      generator.addProvider(new ModBlockStateProvider(generator, CompressedOres.MODID, helper));
+    }
+
     // generator.addProvider(event.includeServer(), new
     // ModItemTagProvider(generator, new ModBlockTagProvider(generator,
     // event.getExistingFileHelper()),CompressedOres.MODID,
     // event.getExistingFileHelper()));
 
-    generator.addProvider(new LootTableProvider(generator));
   }
 }
