@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
@@ -24,12 +25,12 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
         .pattern("SSS")
         .pattern("SSS")
         .pattern("SSS")
-        .define('S', Blocks.STONE)
-        .unlockedBy("has_stone", has(Blocks.STONE))
+        .define('S', Blocks.COBBLESTONE)
+        .unlockedBy("has_stone", has(Blocks.COBBLESTONE))
         .save(consumer);
 
     // 压缩石头可以反向解压出9个石头
-    ShapelessRecipeBuilder.shapeless(Blocks.STONE, 9)
+    ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 9)
         .requires(CompressedOres.COMPRESSED_STONE_1.get())
         .unlockedBy("has_" + getBlockName(CompressedOres.COMPRESSED_STONE_1.get()),
             has(CompressedOres.COMPRESSED_STONE_1.get()))
@@ -53,6 +54,17 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
     createDowngradeRecipe(consumer, CompressedOres.COMPRESSED_STONE_4.get(), CompressedOres.COMPRESSED_STONE_3.get());
     createDowngradeRecipe(consumer, CompressedOres.COMPRESSED_STONE_3.get(), CompressedOres.COMPRESSED_STONE_2.get());
     createDowngradeRecipe(consumer, CompressedOres.COMPRESSED_STONE_2.get(), CompressedOres.COMPRESSED_STONE_1.get());
+
+    // 合成yd之力食品
+    ShapedRecipeBuilder.shaped(CompressedOres.LYD_FOOD_ITEM.get())
+        .pattern("HSH")
+        .pattern("SIS")
+        .pattern("HSH")
+        .define('S', CompressedOres.COMPRESSED_STONE_4.get())
+        .define('I', Items.ENDER_EYE)
+        .define('H', Items.COPPER_INGOT)
+        .unlockedBy("has_stone", has(Blocks.COBBLESTONE))
+        .save(consumer);
 
   }
 

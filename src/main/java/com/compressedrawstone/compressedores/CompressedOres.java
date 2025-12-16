@@ -3,10 +3,14 @@ package com.compressedrawstone.compressedores;
 
 import com.compressedrawstone.compressedores.datagen.DataGenerators;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -42,8 +46,19 @@ public class CompressedOres {
   public static final RegistryObject<Block> COMPRESSED_STONE_9 = registerCompressedBlock("compressed_stone_9", 9);
 
   // 注册其他物品
-  public static final RegistryObject<Item> OTHER_ITEM = ITEMS.register("lyd_item",
-      () -> new OtherItem(new Item.Properties().tab(CompressedOresGroup.COMPRESSED_ORES_TAB)));
+  public static final RegistryObject<Item> LYD_FOOD_ITEM = ITEMS.register("lyd_food",
+      () -> new OtherItem(new Item.Properties().tab(CompressedOresGroup.COMPRESSED_ORES_TAB)
+          .stacksTo(64)
+          .rarity(Rarity.EPIC)
+          .fireResistant()
+          .food(new FoodProperties.Builder()
+              .nutrition(6)
+              .saturationMod(1.3F)
+              .alwaysEat()
+              .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
+              .effect(() -> new MobEffectInstance(MobEffects.GLOWING, 2400, 1), 1.0F)
+              .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 200, 0), 1.0F)
+              .build())));
 
   public CompressedOres() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
