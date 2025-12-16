@@ -6,6 +6,7 @@ import com.compressedrawstone.compressedores.datagen.DataGenerators;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -39,6 +40,10 @@ public class CompressedOres {
   public static final RegistryObject<Block> COMPRESSED_STONE_7 = registerCompressedBlock("compressed_stone_7", 7);
   public static final RegistryObject<Block> COMPRESSED_STONE_8 = registerCompressedBlock("compressed_stone_8", 8);
   public static final RegistryObject<Block> COMPRESSED_STONE_9 = registerCompressedBlock("compressed_stone_9", 9);
+
+  // 注册其他物品
+  public static final RegistryObject<Item> OTHER_ITEM = ITEMS.register("lyd_item",
+      () -> new OtherItem(new Item.Properties().tab(CompressedOresGroup.COMPRESSED_ORES_TAB)));
 
   public CompressedOres() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -75,7 +80,24 @@ public class CompressedOres {
 
     // 注册对应的物品
     ITEMS.register(name,
-        () -> new BlockItem(block.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+        () -> new BlockItem(block.get(), new Item.Properties().tab(CompressedOresGroup.COMPRESSED_ORES_TAB)));
     return block;
   }
+
+  // 创意标签页
+  public class CompressedOresGroup {
+    public static final CreativeModeTab COMPRESSED_ORES_TAB = new CreativeModeTab("compressedores") {
+      @Override
+      public ItemStack makeIcon() {
+        return new ItemStack(CompressedOres.COMPRESSED_STONE_1.get());
+      }
+    };
+
+    public static final CreativeModeTab OTHER_ITEM_TAB = new CreativeModeTab("compressedores_other_item") {
+      @Override
+      public ItemStack makeIcon() {
+        return new ItemStack(CompressedOres.COMPRESSED_STONE_1.get());
+      }
+    };
+  };
 }
