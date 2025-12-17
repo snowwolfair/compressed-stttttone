@@ -1,7 +1,6 @@
 package com.compressedrawstone.compressedores.datagen;
 
 import com.compressedrawstone.compressedores.CompressedOres;
-import com.compressedrawstone.compressedores.ModRecipes;
 import com.compressedrawstone.compressedores.datagen.ModBlockLootTable.LootProvider;
 
 import net.minecraft.data.DataGenerator;
